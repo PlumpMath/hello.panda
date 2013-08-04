@@ -43,11 +43,11 @@ class Hello(ShowBase):
 		sphere.setTexScale(textureStage, 2.0, 2.0)
 		
 		# Spin the object
-		def CameraTask(task): 
+		def SpinTask(task): 
 			x, y, z = sphere.getHpr()
 			sphere.setHpr(x + 1.0, y + 1.0, z + 1.0)
 			return Task.cont 
-		self.taskMgr.add(CameraTask, "SpinCameraTask")
+		self.taskMgr.add(SpinTask, "SpinTask")
 	
 hello = Hello()
 hello.run()
