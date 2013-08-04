@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>hello.panda</title>
+
+		<meta name="description" content="A Reveal.js presentation describing a basic start-to-finish Panda3D project">
+		<meta name="author" content="William Blanchette">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/reveal-theme.css" id="theme">
+		<link rel="stylesheet" href="css/tomorrow-night.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+
+	<body>
+
+		<div id="slides" class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3>Install Panda3D & Dependencies:</h3>
+					<ul>
+						<a href="https://www.panda3d.org/download.php?sdk">panda3d.org/download.php?sdk</a>
+						<a href="https://www.panda3d.org/download.php?runtime">panda3d.org/download.php?runtime</a>
+						<a href="https://developer.nvidia.com/cg-toolkit-download">developer.nvidia.com/cg-toolkit-download</a>
+					</ul>
+				</section>
+				
+				<section>
+					<h3>Create a model:</h3>
+					<img src="images/silo2.png">
+					<a href="http://www.nevercenter.com/silo/">nevercenter.com/silo/</a>
+				</section>
+				
+				<section>
+					<h3>Export Model</h3>
+					<p>Save to models/sphere.obj</p>
+					<p>Problem! Panda3D expects sphere.egg</p>
+				</section>
+				
+				<section>
+					<h3>Solution?</h3>
+					<p><a href="http://andyp.pfastergames.com/2008/12/15/updated-obj2eggpy-convert-obj-to-egg/">http://andyp.pfastergames.com/2008/12/15/updated-obj2eggpy-convert-obj-to-egg/</a></p>
+					<pre><code data-trim contenteditable>
+ppython obj2egg.py models/sphere.obj
+					</code></pre>
+				</section>
+				
+				<section>
+					<h3>hellopanda.py</h3>
+					<pre><code data-trim contenteditable>
+from direct.showbase.ShowBase import ShowBase
+from panda3d.core import *
+
+class Hello(ShowBase):
+	def __init__(self):
+		ShowBase.__init__(self)
+		
+		base.setBackgroundColor(0.0, 0.0, 0.0)
+		base.disableMouse()
+		
+		# Load a model and parent it to the renderer
+		sphere = loader.loadModel("models/sphere.egg")
+		sphere.setPos(0.0, 0.0, 0.0)
+		sphere.reparentTo(render)
+		
+hello = Hello()
+hello.run()
+					</code></pre>
+				</section>
+				
+				<section>
+					<h3>Let's give it a try:</h3>
+					<img src="images/panda-1.png">
+					<p>Not very exciting!</p>
+				</section>
+				
+				<section>
+					<h3>Point the camera at the model:</h3>
+					<pre><code data-trim contenteditable>
+# Position and aim the camera
+base.camLens.setNearFar(1.0, 50.0)
+base.camLens.setFov(45.0)
+self.camera.setPos(0.0, 5.0, 15.0)
+self.camera.lookAt(0.0, 0.0, 0.0)
+					</code></pre>
+				</section>
+				
+				<section>
+					<h3>Progress!</h3>
+					<img src="images/panda-2.png">
+				</section>
+				
+				<section>
+					<h3>Add some ambient light:</h3>
+					<p>Panda3D is 100% lit by default.</p>
+					<pre><code data-trim contenteditable>
+# Set up an ambient light
+ambientLight = AmbientLight("ambientLight")
+ambientLight.setColor(Vec4(0.3, 0.3, 0.3, 1))
+ambientLightNP = render.attachNewNode(ambientLight)
+render.setLight(ambientLightNP)
+					</code></pre>
+				</section>
+				
+				<section>
+					<h3>Not quite right...</h3>
+					<img src="images/panda-3.png">
+				</section>
+				
+				<section>
+					<h3>Add a point light:</h3>
+					<pre><code data-trim contenteditable>
+# Add a point light
+pointLight = PointLight("pointLight")
+pointLight.setColor(VBase4(0.5, 0.5, 0.5, 1))
+pointLightNode = render.attachNewNode(pointLight)
+pointLightNode.setPos(5.0, 0.0, 5.0)
+render.setLight(pointLightNode)
+					</code></pre>
+				</section>
+				
+				<section>
+					<h3>Better!</h3>
+					<img src="images/panda-4.png">
+				</section>
+				
+				<section>
+					<h3>And some texture:</h3>
+					<pre><code data-trim contenteditable>
+# Apply a texture to the sphere
+textureStage = TextureStage("ts")
+texture = loader.loadTexture("textures/grid.png")
+sphere.setTexture(textureStage, texture)
+sphere.setTexScale(textureStage, 2.0, 2.0)
+					</code></pre>
+				</section>
+				
+				<section>
+					<h3>Now we're getting somewhere...</h3>
+					<img src="images/panda-5.png">
+				</section>
+				
+				<section>
+					<h3>Add some movement:</h3>
+					<pre><code data-trim contenteditable>
+import math
+from direct.task import Task 
+from direct.interval.IntervalGlobal import *
+
+. . .
+
+# Spin the object
+def CameraTask(task): 
+	x, y, z = sphere.getHpr()
+	sphere.setHpr(x + 1.0, y + 1.0, z + 1.0)
+	return Task.cont 
+self.taskMgr.add(CameraTask, "SpinCameraTask")
+					</code></pre>
+				</section>
+				
+				<section>
+					<h3>Sign and bundle:</h3>
+					<pre><code data-trim contenteditable>
+openssl genrsa 1024 > ~/.ssh/panda3d.pem
+openssl req -new -x509 -nodes -sha1 -days 365 
+  -key ~/.ssh/panda3d.pem >> ~/.ssh/panda3d.pem
+packp3d -c auto_start=1 -S ~/.ssh/panda3d.pem -o ../hello.p3d -d ./
+					</code></pre>
+				</section>
+				
+				<section>
+					<h3>Embed in a web page:</h3>
+					<pre><code data-trim contenteditable>
+&lt;object width="640" height="480"
+type="application/x-panda3d" data="hello.p3d"&gt;
+	&lt;object width="640" height="480"
+	classid="CLSID:924B4927-D3BA-41EA-9F7E-8A89194AB3AC"&gt;
+		&lt;param name="data" value="hello.p3d"&gt;
+	&lt;/object&gt;
+&lt;/object&gt;
+					</code></pre>
+				</section>
+		
+				<section>
+					<object width="640px" height="480px" type="application/x-panda3d" data="hello.p3d"></object>
+				</section>
+			</div>
+
+		</div>
+		
+		<script src="js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				history: true,
+				center: true,
+				rollingLinks: false,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'js/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				]
+			});
+
+		</script>
+
+	<div id="p3d-wrapper">
+		<object width="640px" height="480px" type="application/x-panda3d" data="hello.p3d"></object>
+	</div>
+
+	</body>
+</html>

@@ -1,0 +1,50 @@
+.reveal section img {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.slides pre {
+	margin-top: 40px;
+}
+
+.reveal .controls {
+	bottom: -20px;
+}
+
+.reveal .controls div.navigate-down, .reveal .controls div.navigate-up,
+.reveal .controls div.navigate-down, .reveal .controls div.navigate-down {
+	display: none;
+}
+
+.reveal .controls div.navigate-right, .reveal .controls div.navigate-right.enabled {
+	border-left-color: #333 !important;
+}
+
+.reveal .controls div.navigate-left, .reveal .controls div.navigate-left.enabled {
+	border-right-color: #333 !important;
+	left: 20px;
+}
+
+.reveal a:not(.image) {
+	color: #888;
+	text-decoration: none;
+	-webkit-transition: 0s;
+	-moz-transition: 0s;
+	-ms-transition: 0s;
+	-o-transition: 0s;
+	transition: 0s;
+}
+
+.reveal a:not(.image):hover {
+  color: #aaa;
+  text-shadow: none;
+  border: none; }
+
+.reveal .roll span:after {
+	-webkit-transition: 0s;
+	-moz-transition: 0s;
+	-ms-transition: 0s;
+	-o-transition: 0s;
+	transition: 0s;
+}
