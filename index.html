@@ -50,14 +50,14 @@
 				<section>
 					<h3>Solution?</h3>
 					<p><a href="http://andyp.pfastergames.com/2008/12/15/updated-obj2eggpy-convert-obj-to-egg/">http://andyp.pfastergames.com/2008/12/15/updated-obj2eggpy-convert-obj-to-egg/</a></p>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim>
 ppython obj2egg.py models/sphere.obj
 					</code></pre>
 				</section>
 				
 				<section>
 					<h3>hellopanda.py</h3>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim>
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import *
 
@@ -86,7 +86,7 @@ hello.run()
 				
 				<section>
 					<h3>Point the camera at the model:</h3>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim>
 # Position and aim the camera
 base.camLens.setNearFar(1.0, 50.0)
 base.camLens.setFov(45.0)
@@ -103,7 +103,7 @@ self.camera.lookAt(0.0, 0.0, 0.0)
 				<section>
 					<h3>Add some ambient light:</h3>
 					<p>Panda3D is 100% lit by default.</p>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim>
 # Set up an ambient light
 ambientLight = AmbientLight("ambientLight")
 ambientLight.setColor(Vec4(0.3, 0.3, 0.3, 1))
@@ -119,7 +119,7 @@ render.setLight(ambientLightNP)
 				
 				<section>
 					<h3>Add a point light:</h3>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim>
 # Add a point light
 pointLight = PointLight("pointLight")
 pointLight.setColor(VBase4(0.5, 0.5, 0.5, 1))
@@ -136,7 +136,7 @@ render.setLight(pointLightNode)
 				
 				<section>
 					<h3>And some texture:</h3>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim>
 # Apply a texture to the sphere
 textureStage = TextureStage("ts")
 texture = loader.loadTexture("textures/grid.png")
@@ -152,7 +152,7 @@ sphere.setTexScale(textureStage, 2.0, 2.0)
 				
 				<section>
 					<h3>Add some movement:</h3>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim>
 import math
 from direct.task import Task 
 from direct.interval.IntervalGlobal import *
@@ -170,7 +170,7 @@ self.taskMgr.add(CameraTask, "SpinCameraTask")
 				
 				<section>
 					<h3>Sign and bundle:</h3>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim>
 openssl genrsa 1024 > ~/.ssh/panda3d.pem
 openssl req -new -x509 -nodes -sha1 -days 365 
   -key ~/.ssh/panda3d.pem >> ~/.ssh/panda3d.pem
@@ -180,7 +180,7 @@ packp3d -c auto_start=1 -S ~/.ssh/panda3d.pem -o ../hello.p3d -d ./
 				
 				<section>
 					<h3>Embed in a web page:</h3>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim>
 &lt;object width="640" height="480"
 type="application/x-panda3d" data="hello.p3d"&gt;
 	&lt;object width="640" height="480"
